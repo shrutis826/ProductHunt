@@ -1,7 +1,7 @@
 //
 //  APIClient.swift
 //  ProductHunt
-
+//
 
 import Foundation
 
@@ -22,16 +22,15 @@ struct APIClient {
     }
 
     func get<T: Decodable>(_ path: String, queryItems: [URLQueryItem] = []) async throws -> T {
-        let endpoint = baseURL.appending(path: path)
+        let endpoint = path.isEmpty ? baseURL : baseURL.appendingPathComponent(path)
 
-        guard var components = URLComponents(
-            url: endpoint,
-            resolvingAgainstBaseURL: false
-        ) else {
+        guard var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false) else {
             throw APIError.invalidURL
         }
 
-        components.queryItems = queryItems
+        if !queryItems.isEmpty {
+            components.queryItems = queryItems
+        }
 
         guard let url = components.url else {
             throw APIError.invalidURL
@@ -39,8 +38,7 @@ struct APIClient {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Accept"
-        )
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
 
         let (data, response) = try await session.data(
             for: request

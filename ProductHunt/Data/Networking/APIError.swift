@@ -1,6 +1,7 @@
 //
 //  APIError.swift
 //  ProductHunt
+//
 
 import Foundation
 
@@ -18,8 +19,8 @@ enum APIError: LocalizedError {
             return "Invalid server response."
         case .httpStatus(let code):
             return "Server returned HTTP \(code)."
-        case .decoding:
-            return "Unable to decode server data."
+        case .decoding(let error):
+            return "Unable to decode server data: \(error.localizedDescription)"
         }
     }
 }

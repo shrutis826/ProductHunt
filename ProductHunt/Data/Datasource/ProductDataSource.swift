@@ -7,7 +7,7 @@ import Foundation
 struct ProductDataSource {
     let client: APIClient
 
-    func fetchProducts(limit: Int = 10, skip: Int = 0) async throws -> ProductList {
+    func fetchProducts(limit: Int = 0, skip: Int = 0) async throws -> ProductList {
         try await client.get("products",
                              queryItems: [
                                 URLQueryItem(

@@ -11,13 +11,16 @@ struct ProductList: Decodable {
 }
 
 // MARK: - Product
-struct Product: Decodable {
+struct Product: Decodable, Identifiable {
     let id: Int
-    let title, productDescription, category: String
+    let title: String
+    let productDescription: String
+    let category: String
     let price, discountPercentage, rating: Double
     let stock: Int
     let tags: [String]
-    let brand, sku: String
+    let brand: String?
+    let sku: String
     let weight: Int
     let dimensions: Dimensions
     let warrantyInformation, shippingInformation, availabilityStatus: String
@@ -27,6 +30,15 @@ struct Product: Decodable {
     let meta: Meta
     let thumbnail: String
     let images: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case id, title
+        case productDescription = "description"
+        case category, price, discountPercentage, rating, stock, tags
+        case brand, sku, weight, dimensions, warrantyInformation, shippingInformation
+        case availabilityStatus, reviews, returnPolicy, minimumOrderQuantity
+        case meta, thumbnail, images
+    }
 }
 
 // MARK: - Dimensions
@@ -44,4 +56,3 @@ struct Review: Decodable {
     let rating: Int
     let comment, date, reviewerName, reviewerEmail: String
 }
-
